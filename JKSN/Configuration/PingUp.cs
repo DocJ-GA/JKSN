@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using JKSN.PushoverAPI;
 using System.Threading;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JKSN.Configuration
 {
@@ -37,7 +38,6 @@ namespace JKSN.Configuration
         public bool NotifyOnDown { get; set; } = true; // Default to true, error on down
         public bool NotifyOnUp { get; set; } = true; // Default to true, notify on up
         public DateTimeOffset LastRun { get; set; } = DateTimeOffset.MinValue;
-        public DateTimeOffset? StatusTime { get; set; } = null;
         public bool IsUp { get; set; } = false; // Default to false, initially down
         public DateTimeOffset LastStatusChange { get; set; } = DateTimeOffset.MinValue;
 
@@ -59,7 +59,6 @@ namespace JKSN.Configuration
                 if (data != null)
                 {
                     LastRun = data.LastRun ?? DateTimeOffset.MinValue;
-                    StatusTime = data.StatusTime ?? DateTimeOffset.MinValue;
                     IsUp = data.IsUp;
                     LastStatusChange = data.LastStatusChange ?? DateTimeOffset.MinValue;
                 }
@@ -77,7 +76,7 @@ namespace JKSN.Configuration
         {
             try
             {
-                var data = JsonConvert.SerializeObject(new Data() { IsUp = IsUp, LastRun = LastRun, StatusTime = StatusTime, LastStatusChange = LastStatusChange });
+                var data = JsonConvert.SerializeObject(new Data() { IsUp = IsUp, LastRun = LastRun, LastStatusChange = LastStatusChange });
                 await File.WriteAllTextAsync(_varPath, data);
             }
             catch (Exception)
@@ -130,7 +129,6 @@ namespace JKSN.Configuration
         private class Data
         {
             public DateTimeOffset? LastRun { get; set; }
-            public DateTimeOffset? StatusTime { get; set; }
             public bool IsUp { get; set; } = false;
             public DateTimeOffset? LastStatusChange { get; set; }
         }
