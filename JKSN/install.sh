@@ -60,7 +60,7 @@ if [ ! -e "JKSN" ]; then
     echo "JKSN binary not found in current directory."
     echo "Downloading the latest jksn release from GitHub."
     wget https://github.com/package
-    tar -xzf JKSN.tar.gz
+    tar -xzf https://github.com/DocJ-GA/JKSN/releases/download/v1.0.0/jksn-1.0.0.tar
 fi
 
 echo "Installing jksn."
