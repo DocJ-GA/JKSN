@@ -73,7 +73,7 @@ echo "Creating '/opt/jksn' directory.";
 mkdir /opt/jksn
 
 echo "Copying binarries into '/opt/jksn'."
-cp binaries/* /opt/jksn/
+cp jksn-1.0.0/binaries/* /opt/jksn/
 echo "Creating symlink into '/usr/bin'."
 ln -s /opt/jksn/JKSN /usr/bin/JKSN
 
@@ -81,11 +81,8 @@ echo "Adding executable permissions for jksn."
 chmod o+x /opt/jksn/JKSN
 chmod g+x /opt/jksn/JKSN
 
-echo "Adding appsettings.json to '/opt/jksn'."
-cp config/appsettings.json /opt/jksn/appsettings.json
-
 echo "Creating initial configuration file".
-cp config/config.toml /etc/jksn/config.toml
+cp jksn-1.0.0/config/config.toml /etc/jksn/config.toml
 
 echo "Changing ownership of files to 'jksn:jksn'."
 chown -R jksn:jksn /opt/jksn
