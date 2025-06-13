@@ -15,8 +15,8 @@ namespace JKSN
             var variablePath = Environment.GetEnvironmentVariable("JKSN_VARIABLE_PATH");
             if (OperatingSystem.IsLinux())
             {
-                ConfigPath = configPath ?? Path.GetDirectoryName(Environment.ProcessPath)!.PrependPath("etc");
-                VariablePath = variablePath ?? Path.GetDirectoryName(Environment.ProcessPath)!.PrependPath("var");
+                ConfigPath = configPath ?? "/etc/jksn";
+                VariablePath = variablePath ?? "/var/jksn";
             }
             else
             {

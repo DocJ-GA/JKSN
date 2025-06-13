@@ -1,0 +1,30 @@
+# This is the configuration file
+# A torrent gluetun check looks like this
+
+
+
+
+
+# EXAMPLES
+#
+# the name proptery of any task listed below MUST be uniqu across all task types.
+# 
+# [[torrents]]
+# name = "New Torrent"								#name of task.  Must be unique.
+# gluetun_uri = "http://localhost:8082"				#gluten url
+# q_bittorrent_uri = "http://localhost:8080"	    #qBitorrent url
+# q_bittorrent_username = "admin"				    #qBittorrent username
+# q_bittorrent_password = "adminadmin"				#qBittorrent password
+# interval = 600								    #Interval in seconds
+#
+# [[ping_ups]]
+# name = "New PingUp"							    #name of task
+# url = "http://localhost:8082"						#the url for the tcp check
+# port = 2025								    	#the port for the tcp check
+# up_interval = 60000							   	#the interval in seconds to run
+# down_interval = 300			    				#the interval in seconds to run when down
+# refused_is_up = true			    		    	#treat refused connections as up or down
+# pushover_api_key = ""								#the pushover api key
+# pushover_user_key = ""					    	#the pushover user key
+# notify_on_down = true					    		#send and error on going down
+# notify_on_up = true					    		#notify if it comes up from down"

@@ -1,0 +1,15 @@
+[Unit]
+Description=JKSN Service
+After=network.target
+
+[Service]
+Type=notify
+ExecStart={Path.Combine(Environment.ProcessPath!, "jksn")}
+WorkingDirectory={Environment.ProcessPath!}
+Restart=always
+RestartSec=5
+User=jksn
+Group=jksn
+
+[Install]
+WantedBy=multi-user.target
