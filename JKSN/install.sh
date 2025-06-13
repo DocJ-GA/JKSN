@@ -56,12 +56,12 @@ else
     echo "User jksn created."
 fi
 
-if [ ! -e "JKSN" ]; then
-    echo "JKSN binary not found in current directory."
-    echo "Downloading the latest jksn release from GitHub."
-    wget https://github.com/package
-    tar -xzf https://github.com/DocJ-GA/JKSN/releases/download/v1.0.0/jksn-1.0.0.tar
-fi
+echo "Downloading the latest jksn release from GitHub."
+wget https://github.com/DocJ-GA/JKSN/releases/download/v1.0.0/jksn-1.0.0.tar.gz
+echo "Extracting jksn binarries."
+tar -xzf jksn-1.0.0.tar.gz
+echo "Removing compressed archive."
+rm jksn-1.0.0.tar.gz
 
 echo "Installing jksn."
 
@@ -72,8 +72,8 @@ mkdir /etc/jksn
 echo "Creating '/opt/jksn' directory.";
 mkdir /opt/jksn
 
-echo "Copying binarries into '/opt/jksn' as JKSN."
-cp JKSN /opt/jksn/JKSN
+echo "Copying binarries into '/opt/jksn'."
+cp binaries/* /opt/jksn/
 echo "Creating symlink into '/usr/bin'."
 ln -s /opt/jksn/JKSN /usr/bin/JKSN
 
