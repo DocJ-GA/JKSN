@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=notify
-ExecStart={Path.Combine(Environment.ProcessPath!, "jksn")}
-WorkingDirectory={Environment.ProcessPath!}
+ExecStart=/usr/bin/JKSN
+WorkingDirectory=/usr/bin
 Restart=always
 RestartSec=5
 User=jksn
