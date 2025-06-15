@@ -14,6 +14,8 @@ namespace JKSN.Configuration
 
         public DateTimeOffset LastRun { get; set; }
 
+        public FailedState FailedState { get; set; }
+
         public void Load(ILogger logger);
 
         public Task LoadAsync(ILogger logger);

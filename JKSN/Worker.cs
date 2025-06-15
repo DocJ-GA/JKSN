@@ -47,6 +47,15 @@ namespace JKSN
         private void LoadConfig()
         {
             var path = Path.Combine(Program.ConfigPath, "config.toml");
+            if (OperatingSystem.IsWindows())
+            {
+                if (!Directory.Exists(Program.ConfigPath))
+                    Directory.CreateDirectory(Program.ConfigPath);
+                if (!Directory.Exists(Program.VariablePath))
+                    Directory.CreateDirectory(Program.VariablePath);
+                if (!File.Exists(path))
+                    File.WriteAllText(path, "");
+            }
             if (!File.Exists(path))
             {
                 _logger.LogCritical($"Configuration file not found at {path}. Please ensure the file exists.");

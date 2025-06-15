@@ -32,8 +32,7 @@ update_permissions () {
 }
 
 echo "Looking for dotnet."
-if ! version_check
-then
+if version_check; then
     echo "dotnet version adaquate."
 else
     echo "SDK dotnet not found or version is not 9.0.0 or higher."
@@ -101,7 +100,12 @@ chmod ug+x /opt/jksn/JKSN
 chmod o-x /opt/jksn/JKSN
 
 echo "Creating initial configuration file".
-cp jksn-1.0.0/config/config.toml /etc/jksn/config.toml
+if [ -f /etc/jksn/config.toml ]; then
+    echo "File exists. Coppying new one to /etc/jksn/config.toml.new"
+    cp jksn-1.0.0/config/config.toml /etc/jksn/config.toml.new
+else
+    cp jksn-1.0.0/config/config.toml /etc/jksn/config.toml
+fi
 
 update_permissions "/opt/jksn"
 update_permissions "/etc/jksn"

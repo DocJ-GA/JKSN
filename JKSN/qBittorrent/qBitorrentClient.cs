@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using JKSN.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -44,26 +45,37 @@ namespace JKSN.qBittorrent
         /// </summary>
         /// <param name="username">The username.</param>
         /// <param name="password">The password</param>
-        /// <exception cref="NullReferenceException">Thrown if the cookie wasn't obtained.</exception>
-        public void Login(string username, string password)
+        public FailedState Login(string username, string password)
         {
+            Console.WriteLine("Logging In");
             var client = new HttpClient();
-            var content = new FormUrlEncodedContent(new[]
+            var content = ToStringContent($"username={username}&password={password}");
+            try
             {
-                new KeyValuePair<string, string>("username", username),
-                new KeyValuePair<string, string>("password", password)
-            });
-            var response = client.PostAsync(URI + "api/v2/auth/login", content).Result;
-            var cookies = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
-            if (cookies == null)
-                throw new NullReferenceException("Cannot get cookie header.");
-            var match = Regex.Matches(cookies, @"(SID=[^;]+);");
-            if (match.Count < 1)
-                throw new NullReferenceException("Cannot get cookie header.");
-            if (match[0].Groups.Count < 2)
-                throw new NullReferenceException("Cannot get cookie header.");
-            AuthCookie = match[0].Groups[1].Value;
-
+                var response = client.PostAsync(new Uri(URI, "api/v2/auth/login"), content).Result;
+                var cookies = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
+                if (cookies == null)
+                    return FailedState.Unrecovereable;
+                var match = Regex.Matches(cookies, @"(SID=[^;]+);");
+                if (match.Count < 1)
+                    return FailedState.Unrecovereable;
+                if (match[0].Groups.Count < 2)
+                    return FailedState.Unrecovereable;
+                AuthCookie = match[0].Groups[1].Value;
+            }
+            catch (Exception ex)
+            {
+                if (ex is HttpRequestException rex)
+                {
+                    if (rex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        return FailedState.Unrecovereable;
+                    else if (rex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                        return FailedState.Unrecovereable;
+                    return FailedState.Recoverable;
+                }
+                return FailedState.Unrecovereable;
+            }
+            return FailedState.None;
         }
 
         /// <summary>
@@ -113,6 +125,11 @@ namespace JKSN.qBittorrent
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("cookie", AuthCookie);
             return client;
+        }
+
+        private static StringContent ToStringContent(string text)
+        {
+            return new StringContent(text, System.Text.Encoding.UTF8, "application/x-www-form-urlencoded");
         }
     }
 }

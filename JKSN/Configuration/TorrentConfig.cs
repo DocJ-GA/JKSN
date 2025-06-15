@@ -20,6 +20,7 @@ namespace JKSN.Configuration
         public int Interval { get; set; } = 600; // Seconds: Default to 5 minutes
         public DateTimeOffset LastRun { get; set; } = DateTimeOffset.MinValue;
         public long Checks { get; set; } = 0;
+        public FailedState FailedState { get; set; } = FailedState.None;
 
         public TorrentConfig()
         {
@@ -55,11 +56,29 @@ namespace JKSN.Configuration
         {
             if (Checks % 1000 == 0)
                 _logger.LogInformation($"{Checks} done on {qBittorrentUri}.");
-            var client = new HttpClient();
-            var port = await client.GetFromJsonAsync<PortForwarded>(GluetunUri);
+            PortForwarded? port = null;
+            try
+            {
+                var client = new HttpClient();
+                port = await client.GetFromJsonAsync<PortForwarded>(new Uri(new Uri(GluetunUri), "v1/openvpn/portforwarded"));
+            }
+            catch (Exception ex)
+            {
+                if (ex is HttpRequestException rex)
+                {
+                    if (rex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        FailedState = FailedState.Unrecovereable;
+                    else if (rex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                        FailedState = FailedState.Unrecovereable;
+                    FailedState = FailedState.Recoverable;
+                    return;
+                }
+                FailedState = FailedState.Unrecovereable;
+            }
             if (port == null)
             {
                 _logger.LogWarning("Port Forwarding not enabled or Gluetun is not running.");
+                FailedState = FailedState.Unrecovereable;
                 return;
             }
             var qBit = new qBittorrentClient(new Uri(qBittorrentUri));

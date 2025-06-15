@@ -40,6 +40,7 @@ namespace JKSN.Configuration
         public DateTimeOffset LastRun { get; set; } = DateTimeOffset.MinValue;
         public bool IsUp { get; set; } = false; // Default to false, initially down
         public DateTimeOffset LastStatusChange { get; set; } = DateTimeOffset.MinValue;
+        public FailedState FailedState { get; set; } = FailedState.None;
 
         public PingUp()
         {
