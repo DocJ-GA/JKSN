@@ -20,30 +20,23 @@ The lastest release can be found [here](https://github.com/DocJ-GA/JKSN/releases
 > We offer no garuntee or warranty that this script would not in some way adversely affect your system.
 
 The install script will look for dotnet 9.0.0 or higher.  If it is not present, it will add the correct repository and install it.
-<a name="directory_structure"></a>
 
-The install script will create the following directories and files:
-
-- `/opt/jksn`
-  - `/opt/jksn/JKSN`
-  - `/opt/jksn/appsettings.json`
-- `/etc/jksn`
-  - `/etc/jksn/config.toml`
-- `/var/jksn`
-- `/lib/systemd/system/jksn.service`
-
-It will also create the user jksn and group jksn.
-
-<a name="directory_permissions"></a>
-It will set the permissions needed on these files and directories to be run by user jksn.
-
-- `/opt/jksn` - `jksn:jksn rwxrwxr_x`
-  - `/opt/jksn/JKSN` - `vrwxrwxr__`
-  - `/opt/jksn/appsettings.json` - `jksn:jksn rw_rw_r__`
-- `/etc/jksn` - `jksn:jksn rwxrwx___`
-  - `/etc/jksn/config.toml` - `jksn:jksn rw_rw____`
-- `/var/jksn` - `jksn:jksn rwxrwx___`
-- `/lib/systemd/system/jksn.service` - `root:root rwxrwxr__`
+```Directory Tree
+/
+├─ opt
+│  └─ 🆕jksn 🧑jksn:jksn 🛡️rwxrwxr_x
+│     ├─ 🆕JKSN 🧑jksn:jksn 🛡️rwxrwxr__
+│     └─ 🆕appsettings.json 🧑jksn:jksn 🛡️rw_rw____
+├─ etc
+│  └─ 🆕jksn 🧑jksn:jksn 🛡️rwxrwx___
+│     └─ 🆕config.toml 🧑jksn:jksn 🛡️rw_rw____
+├─ var
+│  └─ 🆕jksn 🧑jksn:jksn 🛡️rwxrwx___
+└─ lib
+   └─ systemd
+      └─ system
+         └─ 🆕jksn.service 🧑root:root 🛡️rwxrwx___
+```
 
 ### Install Script: Manual
 
@@ -58,7 +51,9 @@ The safest way to install would be to download the [install script](https://gith
 
 The easiest way is to run the script from the internet.  This needs to be run as root.  The install script linked with the code has been vetted, and it should not cause any system wide issues.
 
-`sudo curl -s https://github.com/DocJ-GA/JKSN/releases/latest/download/install.sh | sudo bash`
+```Console Command
+sudo curl -s https://github.com/DocJ-GA/JKSN/releases/latest/download/install.sh | sudo bash
+```
 
 ### Manual Installation
 
@@ -66,29 +61,37 @@ Manual installation is slightly more difficult but doable for anyone with a mode
 
 The Directory tree for the tar.gz looks like this:
 
-- `jksn-[verion]`
-  - `systemd`
-    - `jksn.service`
-  - `config`
-    - `config.toml`
-  - `binaries`
-    - `JKSN`
-    - `appsettings.json`
+```jksn-[version].tar.gz
+jksn-[version]
+├─ systemd
+│  └─ jksn.service
+├─ config
+│  └─ config.toml
+└─ binarries
+   └─ JKSN
+   └─ appsettings.json
+```
 
 You will need to create the user and group jksn.
 
-The directory structure to use is defined in the install script section [here](#directory_structure)
-
-The permissions needed on the files and where they go is also defined in the script section [here](#directory_permissions)
-
 The final structure and permissions should look like this:
-- `/opt/jksn` - `jksn:jksn rwxrwxr_x`
-  - `/opt/jksn/JKSN` - `vrwxrwxr__`
-  - `/opt/jksn/appsettings.json` - `jksn:jksn rw_rw_r__`
-- `/etc/jksn` - `jksn:jksn rwxrwx___`
-  - `/etc/jksn/config.toml` - `jksn:jksn rw_rw____`
-- `/var/jksn` - `jksn:jksn rwxrwx___`
-- `/lib/systemd/system/jksn.service` - `root:root rwxrwxr__`
+
+```Directory Tree
+/
+├─ opt
+│  └─ 🆕jksn 🧑jksn:jksn 🛡️rwxrwxr_x
+│     ├─ 🆕JKSN 🧑jksn:jksn 🛡️rwxrwxr__
+│     └─ 🆕appsettings.json 🧑jksn:jksn 🛡️rw_rw____
+├─ etc
+│  └─ 🆕jksn 🧑jksn:jksn 🛡️rwxrwx___
+│     └─ 🆕config.toml 🧑jksn:jksn 🛡️rw_rw____
+├─ var
+│  └─ 🆕jksn 🧑jksn:jksn 🛡️rwxrwx___
+└─ lib
+   └─ systemd
+      └─ system
+         └─ 🆕jksn.service 🧑root:root 🛡️rwxrwx___
+```
 
 ## Tasks
 
