@@ -1,4 +1,7 @@
 #!/bin/bash
+
+jksnVersion="1.0.1"
+
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root." 
    exit 1
@@ -73,16 +76,16 @@ if getent passwd | grep -c '^username:'; then
 else
     echo "Creating user jksn."
     useradd -M jksn
-    usermod -L jskn
+    usermod -L jksn
     echo "User jksn created."
 fi
 
 echo "Downloading the latest jksn release from GitHub."
-wget https://github.com/DocJ-GA/JKSN/releases/download/v1.0.0/jksn-1.0.0.tar.gz
+wget "https://github.com/DocJ-GA/JKSN/releases/download/v$version/jksn-$version.tar.gz"
 echo "Extracting jksn binarries."
-tar -xzf jksn-1.0.0.tar.gz
+tar -xzf jksn-"$version".tar.gz
 echo "Removing compressed archive."
-rm jksn-1.0.0.tar.gz
+rm jksn-"$version".tar.gz
 
 echo "Installing jksn."
 
@@ -91,7 +94,7 @@ make_dir "/etc/jksn"
 make_dir "/opt/jksn"
 
 echo "Copying binarries into '/opt/jksn'."
-cp jksn-1.0.0/binaries/* /opt/jksn/
+cp jksn-"$version"/binaries/* /opt/jksn/
 echo "Creating symlink into '/usr/bin'."
 ln -s /opt/jksn/JKSN /usr/bin/JKSN
 
@@ -102,9 +105,9 @@ chmod o-x /opt/jksn/JKSN
 echo "Creating initial configuration file".
 if [ -f /etc/jksn/config.toml ]; then
     echo "File exists. Coppying new one to /etc/jksn/config.toml.new"
-    cp jksn-1.0.0/config/config.toml /etc/jksn/config.toml.new
+    cp jksn-"$version"/config/config.toml /etc/jksn/config.toml.new
 else
-    cp jksn-1.0.0/config/config.toml /etc/jksn/config.toml
+    cp jksn-"$version"/config/config.toml /etc/jksn/config.toml
 fi
 
 update_permissions "/opt/jksn"
@@ -112,7 +115,7 @@ update_permissions "/etc/jksn"
 update_permissions "/var/jksn"
 
 echo "Creating systemd file."
-cp jksn-1.0.0/systemd/jksn.service /lib/systemd/system/jksn.service
+cp jksn-"$version"/systemd/jksn.service /lib/systemd/system/jksn.service
 
 echo "Updating daemon."
 systemctl daemon-reload
